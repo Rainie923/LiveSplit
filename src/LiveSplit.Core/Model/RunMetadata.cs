@@ -101,7 +101,15 @@ public class RunMetadata
             }
 
             string categoryId = Category?.ID;
-            IEnumerable<Variable> variables = Game.FullGameVariables.Where(x => x.CategoryID == null || x.CategoryID == categoryId);
+            IEnumerable<Variable> variables;
+            if (Level == null)
+            {
+                variables = Game.FullGameVariables.Where(x => x.CategoryID == null || x.CategoryID == categoryId);
+            }
+            else
+            {
+                variables = Level.Variables.Where(x => x.CategoryID == null || x.CategoryID == categoryId);
+            }
             return variables.ToDictionary(x => x, x =>
             {
                 if (!VariableValueNames.ContainsKey(x.Name))
